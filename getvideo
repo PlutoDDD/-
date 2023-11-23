@@ -1,0 +1,57 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jul  3 19:45:33 2022
+
+@author: Administrator
+"""
+
+from bs4 import BeautifulSoup
+import urllib.request
+
+def DataGet(html_doc):
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3775.400 QQBrowser/10.6.4208.400'}
+    req = urllib.request.Request(html_doc,headers = headers)
+    webpage = urllib.request.urlopen(req)  
+    html = webpage.read().decode("utf-8")
+    soup = BeautifulSoup(html, 'html.parser')   #文档对象
+    
+    t1 = soup.find_all('a')
+    href_list = []
+    for t2 in t1:
+        t3 = t2.get('href')
+        href_list.append(t3)
+
+    a = href_list[25:134]
+    res = []
+    for i in a:
+        if i not in res:
+            res.append(i)
+    return res
+
+def DataSet(html_doc):
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3775.400 QQBrowser/10.6.4208.400'}
+    req = urllib.request.Request(html_doc,headers = headers)  
+    webpage = urllib.request.urlopen(req)  
+    html = webpage.read().decode("utf-8")
+    soup = BeautifulSoup(html, 'html.parser')   #文档对象
+    
+    t1 = soup.find_all('p')
+    href_list = []
+    for t2 in t1:
+        t3 = t2.get('data-src')
+        href_list.append(t3)
+
+    res = href_list[0]
+    return res
+    
+    
+html_doc = "http://www.snrtv.com/snr_bjsx/index.html"          #第一页
+res = DataGet(html_doc)
+
+f = open('video.txt','w',encoding='gbk')
+f.write('6')
+for i in res:
+    x = DataSet(i)
+    f.write(x)
+    f.write('\n')
+f.close
