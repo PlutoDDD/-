@@ -49,9 +49,8 @@ html_doc = "http://www.snrtv.com/snr_bjsx/index.html"          #第一页
 res = DataGet(html_doc)
 
 f = open('video.txt','w',encoding='gbk')
-f.write('6')
 for i in res:
     x = DataSet(i)
     f.write(x)
     f.write('\n')
-f.close
+f.close()
